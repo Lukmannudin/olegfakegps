@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Mock Position</title>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha384-VzLXTJGPSyTLX6d96AxgkKvE/LRb7ECGyTxuwtpjHnVWVZs2gp5RDjeM/tgBnVdM" crossorigin="anonymous">    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha384-RFZC58YeKApoNsIbBxf4z6JJXmh+geBSgkCQXFyh+4tiFSJmJBt+2FbjxW7Ar16M" crossorigin="anonymous"></script>
+    <style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 600px;
+			height: 400px;
+		}
+	</style>
+
+    <style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+	var map = L.map('map').fitWorld();
+	map.panTo(new L.LatLng(12, 15));
+	map.zoomIn(1);
+    var popup = L.popup();
+    var alreadyRunning = false;
+
+
+	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+        tileSize: 512,
+        minZoom: 1,
+        maxZoom: 17,
+        zoomOffset: -1,
+        id: 'mapbox/streets-v11',
+        accessToken: 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw'
+    }).addTo(map);
+
+
+	function onMapClick(e) {
+		if (typeof marker != 'undefined')
+		    map.removeLayer(marker);
+		marker = L.marker(e.latlng).addTo(map);
+        Android.setPosition(e.latlng.wrap().toString());
+	}
+
+    function setOnMap(aLat, aLng) {
+        if (typeof marker != 'undefined')
+		    map.removeLayer(marker);
+		zoom = map.getZoom();
+		map.setView(new L.LatLng(aLat, aLng), zoom);
+	    marker = L.marker([aLat, aLng]).addTo(map);
+	    alreadyRunning = true;
+	    //alert(alreadyRunning);
+    }
+
+    map.on('contextmenu', onMapClick);
+
+    lat = Android.getLat();
+    lng = Android.getLng();
+
+    if (lat != 0 && lng != 0)
+    {
+        map.setView(new L.LatLng(lat, lng), 12);
+        marker = L.marker([lat, lng]).addTo(map);
+    }
+
+
+</script>
+</body>
+</html>
