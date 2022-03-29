@@ -1,9 +1,9 @@
 package com.oleg.olegfakegps;
 
+import static com.oleg.olegfakegps.SourceChange.CHANGE_FROM_MAP;
+
 import android.content.Context;
 import android.webkit.JavascriptInterface;
-
-import static com.oleg.olegfakegps.MainActivity.SourceChange.CHANGE_FROM_MAP;
 
 
 public class WebAppInterface {
@@ -22,15 +22,11 @@ public class WebAppInterface {
     @JavascriptInterface
     public void setPosition(final String str) {
 
-        mainActivity.runOnUiThread(new Runnable() {
+        mainActivity.runOnUiThread(() -> {
+            String lat = str.substring(str.indexOf('(') + 1, str.indexOf(','));
+            String lng = str.substring(str.indexOf(',') + 2, str.indexOf(')'));
 
-            @Override
-            public void run() {
-                String lat = str.substring(str.indexOf('(') + 1, str.indexOf(','));
-                String lng = str.substring(str.indexOf(',') + 2, str.indexOf(')'));
-
-                MainActivity.setLatLng(lat, lng, CHANGE_FROM_MAP);
-            }
+            MainActivity.setLatLng(lat, lng, CHANGE_FROM_MAP);
         });
     }
 

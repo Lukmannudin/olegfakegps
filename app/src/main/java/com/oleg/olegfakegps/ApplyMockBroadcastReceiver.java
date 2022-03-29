@@ -27,20 +27,5 @@ public class ApplyMockBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        try {
-            double lat = Double.parseDouble(sharedPref.getString("lat", "0"));
-            double lng = Double.parseDouble(sharedPref.getString("lng", "0"));
-
-            MainActivity.exec(lat, lng);
-
-            if (!MainActivity.hasEnded()) {
-                MainActivity.setAlarm(MainActivity.timeInterval);
-            } else {
-                MainActivity.stopMockingLocation();
-            }
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 }
