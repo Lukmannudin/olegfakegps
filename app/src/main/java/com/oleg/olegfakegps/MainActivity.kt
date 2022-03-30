@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         } catch (e: PackageManager.NameNotFoundException) {
             e.printStackTrace()
         }
+
         checkSharedPrefs()
         howManyTimes = sharedPref?.getString("howManyTimes", "1")!!
             .toInt()
